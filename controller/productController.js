@@ -95,6 +95,7 @@ export const getProductById = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
   try {
     const id = req.params.id;
+    // will only update item if body contains isActive or discount or both.
     if (
       req.body.isActive === undefined &&
       req.body.details.discount === undefined
@@ -103,7 +104,7 @@ export const updateProduct = async (req, res, next) => {
         "Active and Discount where not provided, cannot edit other fields"
       );
     }
-
+    // Making sure that we update the right data.
     const { isActive, details } = { ...req.body };
     const { discount } = { ...details };
 
