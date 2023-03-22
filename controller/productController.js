@@ -94,11 +94,10 @@ export const getProductById = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
-    console.log(typeof req.body.isActive !== 'boolean', typeof req.body.details.discount !== 'number' );
     const id = req.params.id;
     if (
-        typeof req.body.isActive !== 'boolean' &&
-        typeof req.body.details.discount !== 'number'
+      req.body.isActive === undefined &&
+      req.body.details.discount === undefined
     ) {
       throw new Error(
         "Active and Discount where not provided, cannot edit other fields"
@@ -110,11 +109,11 @@ export const updateProduct = async (req, res, next) => {
 
     const updatedFields = {};
 
-    if (typeof isActive === 'boolean') {
+    if (typeof isActive === "boolean") {
       updatedFields.isActive = isActive;
     }
-    if (typeof discount === 'number') {
-        updatedFields['details.discount'] = discount;
+    if (typeof discount === "number") {
+      updatedFields["details.discount"] = discount;
     }
 
     const product = await Product.updateOne(
@@ -130,7 +129,6 @@ export const updateProduct = async (req, res, next) => {
       success: true,
       data: "Item Was updated successfully!",
     });
-
   } catch (error) {
     res.status(400).json({
       success: false,
